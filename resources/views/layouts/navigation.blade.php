@@ -15,6 +15,17 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('appointments.create')" :active="request()->routeIs('appointments.create')">
+                        {{ __('Book Appointment') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('appointments.index')" :active="request()->routeIs('appointments.*')">
+                        {{ __('View Appointments') }}
+                    </x-nav-link>
+                    @if(Auth::check() && Auth::user()->role_id === 1)
+                        <x-nav-link :href="route('admin.appointments.index')" :active="request()->routeIs('admin.appointments.*')">
+                            {{ __('Approve Appointments') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +81,17 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('appointments.index')" :active="request()->routeIs('appointments.*')">
+                {{ __('Appointments') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('appointments.create')" :active="request()->routeIs('appointments.create')">
+                {{ __('Book Appointment') }}
+            </x-responsive-nav-link>
+            @if(Auth::check() && Auth::user()->role_id === 1)
+                <x-responsive-nav-link :href="route('admin.appointments.index')" :active="request()->routeIs('admin.appointments.*')">
+                    {{ __('Approve Appointments') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

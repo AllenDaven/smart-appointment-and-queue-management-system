@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreAppointmentRequest;
 use App\Models\Appointment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
@@ -23,69 +24,145 @@ class AppointmentController extends Controller
 
         // Client sees only their appointments
         if ($user->role->name === 'client') {
-        /** @var \App\Models\User $user */
-        $appointments = $user->appointments()->latest()->get();
-
+            /** @var \App\Models\User $user */
+            $appointments = $user->appointments()->latest()->paginate(10);
         } else {
             // Staff/Admin see all appointments
-            $appointments = Appointment::latest()->get();
+            $appointments = Appointment::with('user')->latest()->paginate(15);
         }
 
-        return view('appointments.index', compact('appointments'));
+        return view('appoinments.index', compact('appointments'));
+    }
+
+    /**
+     * Show the form for creating a new appointment
+     */
+    public function create()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
+        return view('appoinments.create');
     }
 
     /**
      * Store a new appointment (Client)
+     * Uses StoreAppointmentRequest for validation
      */
-    public function store(Request $request)
+    public function store(StoreAppointmentRequest $request)
     {
-        $request->validate([
-            'date' => 'required|date|after_or_equal:today',
-            'time' => 'required',
-        ]);
-
+        $validated = $request->validated();
         $user = Auth::user();
 
-        Appointment::create([
+        // Create the appointment with validated data
+        $appointment = Appointment::create([
             'user_id' => $user->id,
-            'appointment_date' => $request->date,
-            'appointment_time' => $request->time,
+            'appointment_date' => $validated['appointment_date'],
+            'appointment_time' => $validated['appointment_time'],
             'status' => 'Pending',
         ]);
 
-        return redirect()->back()->with('success', 'Appointment booked!');
+        return redirect()->route('appointments.index')->with('success', 'Appointment booked successfully! Your appointment ID is #' . $appointment->id);
     }
 
     /**
-     * Approve appointment (Staff/Admin)
+     * Show appointment details
      */
-    public function approve(int $id)
+    public function show(Appointment $appointment)
     {
-        $appointment = Appointment::findOrFail($id);
+        $user = Auth::user();
 
-        // Calculate next queue number for the day
+        // Check authorization
+        if ($user->id !== $appointment->user_id && $user->role->name === 'client') {
+            return redirect()->route('appointments.index')->with('error', 'Unauthorized access.');
+        }
+
+        return view('appoinments.show', compact('appointment'));
+    }
+
+    /**
+     * Delete an appointment
+     */
+    public function destroy(Appointment $appointment)
+    {
+        $user = Auth::user();
+
+        // Check authorization
+        if ($user->id !== $appointment->user_id && $user->role->name === 'client') {
+            return redirect()->route('appointments.index')->with('error', 'Unauthorized access.');
+        }
+
+        $appointment->delete();
+
+        return redirect()->route('appointments.index')->with('success', 'Appointment cancelled successfully!');
+    }
+
+    /**
+     * Admin: view all appointments with approve/reject controls
+     */
+    public function adminIndex()
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role_id !== 1) {
+            abort(403, 'Unauthorized');
+        }
+
+        $appointments = Appointment::with('user')->latest()->paginate(20);
+
+        return view('appoinments.admin.index', compact('appointments'));
+    }
+
+    /**
+     * Admin: approve appointment with optional message
+     */
+    public function approve(Request $request, Appointment $appointment)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role_id !== 1) {
+            abort(403, 'Unauthorized');
+        }
+
+        $data = $request->validate([
+            'admin_message' => ['nullable', 'string', 'max:500'],
+        ]);
+
         $lastQueue = Appointment::whereDate('appointment_date', $appointment->appointment_date)
-                                ->where('status', 'Approved')
-                                ->max('queue_number');
+            ->where('status', 'Approved')
+            ->max('queue_number');
 
         $appointment->update([
             'status' => 'Approved',
-            'queue_number' => ($lastQueue ?? 0) + 1
+            'queue_number' => ($lastQueue ?? 0) + 1,
+            'admin_message' => $data['admin_message'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Appointment approved.');
     }
 
     /**
-     * Reject appointment (Staff/Admin)
+     * Admin: reject appointment with optional message
      */
-    public function reject(int $id)
+    public function reject(Request $request, Appointment $appointment)
     {
-        $appointment = Appointment::findOrFail($id);
+        $user = Auth::user();
+
+        if (!$user || $user->role_id !== 1) {
+            abort(403, 'Unauthorized');
+        }
+
+        $data = $request->validate([
+            'admin_message' => ['nullable', 'string', 'max:500'],
+        ]);
 
         $appointment->update([
             'status' => 'Rejected',
-            'queue_number' => null
+            'queue_number' => null,
+            'admin_message' => $data['admin_message'] ?? null,
         ]);
 
         return redirect()->back()->with('success', 'Appointment rejected.');
