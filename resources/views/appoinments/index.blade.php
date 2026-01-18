@@ -5,17 +5,11 @@
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
         <div class="mb-8">
-            <div class="flex justify-between items-center">
+            <div class="text-center">
                 <div>
                     <h1 class="text-4xl font-bold text-gray-900 mb-2">My Appointments</h1>
                     <p class="text-gray-600">Manage and view all your scheduled appointments</p>
                 </div>
-                <a href="{{ route('appointments.create') }}" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition duration-200 flex items-center">
-                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    New Appointment
-                </a>
             </div>
         </div>
 

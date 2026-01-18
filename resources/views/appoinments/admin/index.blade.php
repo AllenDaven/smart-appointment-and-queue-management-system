@@ -1,15 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-8">
+        <div class="text-center justify-between mb-8">
             <div>
                 <h1 class="text-4xl font-bold text-gray-900">📋 Manage Appointments</h1>
                 <p class="text-sm text-gray-600 mt-1">Approve or reject pending appointments</p>
             </div>
-            <a href="{{ route('appointments.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-4 py-2 rounded-lg">← Back</a>
         </div>
 
         <!-- Success/Error Messages -->

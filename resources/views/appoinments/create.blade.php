@@ -10,7 +10,7 @@
         </div>
 
         <!-- Form Card -->
-        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="bg-white rounded-lg shadow-xl overflow-hidden mb-12">
             <!-- Form Header -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
                 <h2 class="text-2xl font-semibold text-white">Schedule Your Appointment</h2>
@@ -18,7 +18,7 @@
             </div>
 
             <!-- Form Body -->
-            <form method="POST" action="{{ route('appointments.store') }}" class="p-8">
+            <form method="POST" action="{{ route('appointments.store') }}" class="px-6 py-8 sm:px-10">
                 @csrf
 
                 <!-- Error Messages -->
@@ -115,7 +115,7 @@
                 <div class="flex gap-4">
                     <button
                         type="submit"
-                        class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center"
+                        class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-black font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center"
                     >
                         <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -135,6 +135,8 @@
                 </div>
             </form>
         </div>
+
+        <div class="h-10"></div>
 
         <!-- Additional Info -->
         <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
