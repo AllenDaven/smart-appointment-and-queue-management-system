@@ -1,16 +1,4 @@
 <style>
-* {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html, body {
-        height: 100%;
-        font-family: 'Poppins', 'Inter', sans-serif;
-        background: #f9fafb;
-    }
-
     /* Navigation */
     nav {
         background: white;
