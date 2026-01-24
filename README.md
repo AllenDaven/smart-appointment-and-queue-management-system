@@ -1,21 +1,43 @@
-# 📅 Appointment Booking System (Capstone Project)
+# 📅 QueueSmart: A Web-Based Smart Appointment and Queue Management System  
+*(Capstone Project)*
+
+---
 
 ## 📌 Project Overview
-The **Appointment Booking System** is a web-based application developed as a capstone project.  
-It allows users to securely book appointments by selecting an available date and time.  
-The system improves scheduling efficiency and reduces manual appointment handling.
+**QueueSmart** is a web-based appointment and queue management system developed as a capstone project.  
+It enables users to securely book appointments while allowing administrators to manage, approve, reject, and monitor appointments efficiently.
 
-This project demonstrates the use of **Laravel**, **Blade Templates**, **Tailwind CSS**, and **MySQL** following modern web development practices.
+The system minimizes manual scheduling, improves service flow, and provides role-based dashboards for users and administrators.
+
+This project is built using **Laravel**, **Blade Templates**, **Tailwind CSS**, and **MySQL**, following modern web development best practices.
 
 ---
 
 ## 🚀 Features
-- User authentication (Register, Login, Logout)
-- Appointment booking (date & time selection)
+
+### 👤 User / Client Features
+- User registration with validation (email uniqueness, password confirmation)
+- Secure login and logout
+- Appointment booking with date and time selection
+- View appointment details and status (Pending, Approved, Rejected)
+- Cancel booked appointments
+- User-specific dashboard
+- Role-based navigation (admin-only pages hidden from users)
+
+### 🛠️ Admin / Staff Features
+- Admin login authentication
+- Appointment approval and rejection
+- View all appointments
+- Appointment status management (Pending, Approved, Rejected)
+- Admin dashboard with analytics:
+  - Total users
+  - Total appointments
+  - Approved, Rejected, and Pending counts
+
+### 🌐 System Features
 - Office-hours validation (9:00 AM – 5:00 PM)
-- Admin appointment approval
-- View booked appointments
-- Responsive and modern UI
+- Role-based access control
+- Responsive UI (mobile, tablet, desktop)
 - Success and error notifications
 - Secure form submission with CSRF protection
 
@@ -30,9 +52,6 @@ This project demonstrates the use of **Laravel**, **Blade Templates**, **Tailwin
 
 ---
 
-
----
-
 ## ⚙️ How to Run the Project (Local Setup)
 
 ### ✅ Prerequisites
@@ -41,14 +60,14 @@ Ensure the following are installed:
 - Composer
 - MySQL
 - Node.js & NPM
-- Laravel CLI (optional)
+- Git
 
 ---
 
 ### 📥 Step 1: Clone the Repository
 ```bash
-git clone https://github.com/your-username/appointment-booking-system.git
-cd appointment-booking-system
+git clone https://github.com/your-username/queuesmart.git
+cd queuesmart
 
 📦 Step 2: Install Dependencies
 composer install
